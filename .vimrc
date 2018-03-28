@@ -21,6 +21,8 @@ Plugin 'tpope/vim-obsession'
 Plugin 'tpope/vim-fireplace'
 Plugin 'venantius/vim-cljfmt'
 Plugin 'bhurlow/vim-parinfer'
+Plugin 'venantius/vim-eastwood'
+Plugin 'humorless/vim-kibit'
 
 call vundle#end()
 ":PluginInstall
@@ -115,6 +117,8 @@ set tags=.ctags
 let g:syntastic_python_checkers = ['pylint']
 let g:syntastic_haskell_checkers = ['ghc_mod', 'hlint']
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_clojure_checkers = ['eastwood']
+let g:eastwood_add_linters = ['all']
 
 "reload namespace in Clojure REPL
 autocmd BufWritePost *.clj,*.cljc :Require
