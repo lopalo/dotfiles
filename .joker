@@ -1,0 +1,5 @@
+{:known-macros [rum.core/defc
+                rum.core/defcs]
+ :rules {:if-without-else true
+         :no-forms-threading true
+         :unused-as true}}
