@@ -31,6 +31,8 @@ Plugin 'bhurlow/vim-parinfer'
 Plugin 'venantius/vim-eastwood'
 Plugin 'humorless/vim-kibit'
 
+Plugin 'rhysd/vim-grammarous'
+
 call vundle#end()
 ":PluginInstall
 
@@ -143,7 +145,6 @@ let g:clj_fmt_autosave = 0
 "use project specific .vimrc files
 set exrc
 set secure
-
 
 autocmd FileType clojure nnoremap <buffer> >> :call parinfer#do_indent()<cr>
 autocmd FileType clojure nnoremap <buffer> << :call parinfer#do_undent()<cr>
