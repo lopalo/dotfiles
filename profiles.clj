@@ -5,6 +5,10 @@
         :repl-options {:init (require 'cljfmt.core)}
         :dependencies [[lein-cljfmt "0.6.4"
                         :exclusions [org.clojure/clojure]]
+                       [jonase/eastwood "0.3.3" ;the highest version that works with Syntastic
+                        :exclusions [org.clojure/clojure]]
+                       [lein-kibit "0.1.6"
+                        :exclusions [org.clojure/clojure]]
                        [criterium "0.4.4"
                         :exclusions [org.clojure/clojure]]
                        [com.clojure-goes-fast/clj-async-profiler "0.3.0"
