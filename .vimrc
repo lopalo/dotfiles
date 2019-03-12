@@ -146,5 +146,6 @@ let g:clj_fmt_autosave = 0
 set exrc
 set secure
 
-autocmd FileType clojure nnoremap <buffer> >> :call parinfer#do_indent()<cr>
-autocmd FileType clojure nnoremap <buffer> << :call parinfer#do_undent()<cr>
+autocmd FileType clojure nnoremap <buffer> >> :call parinfer#do_indent()<CR>
+autocmd FileType clojure nnoremap <buffer> << :call parinfer#do_undent()<CR>
+autocmd FileType clojure nnoremap mm :Eval (intern 'user 'm *1)<CR>

@@ -9,6 +9,8 @@
                         :exclusions [org.clojure/clojure]]
                        [lein-kibit "0.1.6"
                         :exclusions [org.clojure/clojure]]
+                       [vvvvalvalval/scope-capture "0.3.2"
+                        :exclusions [org.clojure/clojure]]
                        [criterium "0.4.4"
                         :exclusions [org.clojure/clojure]]
                        [com.clojure-goes-fast/clj-async-profiler "0.3.0"
