@@ -27,8 +27,6 @@ Plugin 'tpope/vim-obsession'
 
 Plugin 'tpope/vim-fireplace'
 Plugin 'venantius/vim-cljfmt'
-Plugin 'venantius/vim-eastwood'
-Plugin 'humorless/vim-kibit'
 Plugin 'bhurlow/vim-parinfer'
 
 Plugin 'rhysd/vim-grammarous'
@@ -124,8 +122,6 @@ set noswapfile
 set tags=.ctags
 
 let g:syntastic_mode_map = {'mode': 'passive'}
-let g:syntastic_clojure_checkers = ['eastwood']
-let g:eastwood_add_linters = ['all']
 
 "reload namespace in Clojure REPL
 autocmd BufWritePost *.clj,*.cljc :Require

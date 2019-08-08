@@ -1,13 +1,8 @@
-{:user {:plugins [[venantius/ultra "0.5.4"]
+{:user {:plugins [[venantius/ultra "0.6.0"]
                   [lein-cljfmt "0.6.4"]
-                  [jonase/eastwood "0.3.5"]
-                  [lein-kibit "0.1.6"]]
+                  [cider/cider-nrepl "0.21.1"]]
         :repl-options {:init (require 'cljfmt.core)}
         :dependencies [[lein-cljfmt "0.6.4"
-                        :exclusions [org.clojure/clojure]]
-                       [jonase/eastwood "0.3.3" ;the highest version that works with Syntastic
-                        :exclusions [org.clojure/clojure]]
-                       [lein-kibit "0.1.6"
                         :exclusions [org.clojure/clojure]]
                        [vvvvalvalval/scope-capture "0.3.2"
                         :exclusions [org.clojure/clojure]]
