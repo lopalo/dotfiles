@@ -155,10 +155,6 @@ autocmd Filetype ocaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType ocaml nnoremap [d :MerlinLocate<CR>
 autocmd FileType ocaml noremap == :Neoformat<CR>
 
-let g:neoformat_ocaml_ocamlformat = {
-\   'exe': 'ocamlformat',
-\   'args': ['--enable-outside-detected-project']
-\}
 let g:neoformat_enabled_ocaml = ['ocamlformat']
 let g:vim_parinfer_globs = ['*.clj', '*.cljs', '*.cljc', '*.edn', '*.ss', 'dune', 'dune-project', 'dune-workspace']
 
