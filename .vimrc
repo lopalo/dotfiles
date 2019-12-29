@@ -27,6 +27,7 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-obsession'
 Plugin 'sbdchd/neoformat'
+Plugin 'jpalardy/vim-slime'
 
 Plugin 'tpope/vim-fireplace'
 Plugin 'venantius/vim-cljfmt'
@@ -127,6 +128,7 @@ set tags=.ctags
 
 let g:syntastic_mode_map = {'mode': 'passive'}
 
+let g:ale_set_highlights = 0
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
@@ -144,6 +146,8 @@ let g:rainbow_conf = {
 
 let g:clj_fmt_autosave = 0
 
+let g:slime_target = "tmux"
+
 
 "use project specific .vimrc files
 set exrc
@@ -157,8 +161,10 @@ autocmd Filetype ocaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType ocaml nnoremap [d :MerlinLocate<CR>
 autocmd FileType ocaml noremap == :Neoformat<CR>
 
+autocmd BufNewFile,BufRead *.jly set syntax=scheme
+
 let g:neoformat_enabled_ocaml = ['ocamlformat']
-let g:vim_parinfer_globs = ['*.clj', '*.cljs', '*.cljc', '*.edn', '*.ss', 'dune', 'dune-project', 'dune-workspace']
+let g:vim_parinfer_globs = ['*.clj', '*.cljs', '*.cljc', '*.edn', '*.jly', 'dune', 'dune-project', 'dune-workspace']
 
 
 " ## added by OPAM user-setup for vim / base ## 93ee63e278bdfc07d1139a748ed3fff2 ## you can edit, but keep this line
