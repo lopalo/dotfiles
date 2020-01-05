@@ -161,7 +161,8 @@ autocmd Filetype ocaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType ocaml nnoremap [d :MerlinLocate<CR>
 autocmd FileType ocaml noremap == :Neoformat<CR>
 
-autocmd BufNewFile,BufRead *.jly set syntax=scheme
+autocmd BufNewFile,BufRead *.jly set ft=scheme
+autocmd BufNewFile,BufRead *.jly setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 let g:neoformat_enabled_ocaml = ['ocamlformat']
 let g:vim_parinfer_globs = ['*.clj', '*.cljs', '*.cljc', '*.edn', '*.jly', 'dune', 'dune-project', 'dune-workspace']
