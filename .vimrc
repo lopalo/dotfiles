@@ -129,6 +129,7 @@ set tags=.ctags
 let g:syntastic_mode_map = {'mode': 'passive'}
 
 let g:ale_set_highlights = 0
+nmap <silent> <LocalLeader>e :ALEToggle <return>
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
