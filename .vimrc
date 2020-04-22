@@ -9,32 +9,38 @@
 "    Clojure ClojureScript: joker
 "    OCaml: merlin
 
-"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'jonathanfilip/vim-lucius'
-Plugin 'ervandew/supertab'
-Plugin 'luochen1990/rainbow'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'w0rp/ale'
-Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-obsession'
-Plugin 'sbdchd/neoformat'
-Plugin 'jpalardy/vim-slime'
+set rtp+=~/.vim
 
-Plugin 'tpope/vim-fireplace'
-Plugin 'venantius/vim-cljfmt'
-Plugin 'bhurlow/vim-parinfer'
+call plug#begin('~/.vim/plugged')
 
-call vundle#end()
-":PluginInstall
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'ervandew/supertab'
+Plug 'luochen1990/rainbow'
+Plug 'vim-syntastic/syntastic'
+Plug 'w0rp/ale'
+Plug 'scrooloose/nerdtree'
+Plug 'kien/ctrlp.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-obsession'
+Plug 'sbdchd/neoformat'
+Plug 'jpalardy/vim-slime'
+
+Plug 'tpope/vim-fireplace'
+Plug 'venantius/vim-cljfmt'
+Plug 'bhurlow/vim-parinfer'
+
+call plug#end()
+":PlugInstall
 
 
 set nocompatible                       "use Vim settings, rather than Vi settings
