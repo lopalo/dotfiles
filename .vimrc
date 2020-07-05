@@ -39,14 +39,6 @@ Plug 'tpope/vim-fireplace'
 Plug 'venantius/vim-cljfmt'
 Plug 'bhurlow/vim-parinfer'
 
-Plug 'autozimu/LanguageClient-neovim', {
-\   'branch': 'next',
-\   'do': 'bash install.sh',
-\}
-Plug 'ionide/Ionide-vim', {
-\   'do':  'make fsautocomplete',
-\}
-
 call plug#end()
 ":PlugInstall
 
@@ -157,30 +149,6 @@ let g:vim_parinfer_globs = ['*.clj', '*.cljs', '*.cljc', '*.edn', '*.jly', 'dune
 
 let g:slime_target = "tmux"
 
-let g:LanguageClient_diagnosticsDisplay = {
-\   1: {
-\       "name": "Error",
-\       "signText": ">>",
-\       "signTexthl": "Error",
-\   },
-\   2: {
-\       "name": "Warning",
-\       "signText": "--",
-\       "signTexthl": "Todo",
-\   },
-\   3: {
-\       "name": "Information",
-\       "signText": "--",
-\       "signTexthl": "Todo",
-\   },
-\   4: {
-\       "name": "Hint",
-\       "signText": "--",
-\       "signTexthl": "Todo",
-\   }
-\}
-let g:LanguageClient_useVirtualText = "No"
-
 noremap == :Neoformat<CR>
 
 "use project specific .vimrc files
@@ -239,20 +207,4 @@ for tool in s:opam_packages
 endfor
 " ## end of OPAM user-setup addition for vim / base ## keep this line
 
-autocmd Filetype fsharp setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-autocmd FileType fsharp nnoremap <silent> <C-j> :cn<CR>
-autocmd FileType fsharp nnoremap <silent> <C-k> :cp<CR>
-autocmd FileType fsharp nnoremap [d :call LanguageClient#textDocument_definition({'gotoCmd': 'split'})<CR>
-autocmd FileType fsharp nnoremap <LocalLeader>t :call LanguageClient#textDocument_hover()<CR>
-autocmd FileType fsharp nnoremap <LocalLeader>r :call LanguageClient#textDocument_rename()<CR>
-autocmd FileType fsharp nnoremap <LocalLeader>l :FSharpLoadWorkspaceAuto<CR>
-
-let g:neoformat_enabled_fsharp = ['fantomas']
-
-let g:neoformat_fsharp_fantomas = {
-\   'exe': 'fantomas',
-\   'args': ['--stdin', '--stdout', '--config', "."],
-\   'stdin': 1,
-\   'no_append': 1,
-\}
 
