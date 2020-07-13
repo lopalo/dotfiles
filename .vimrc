@@ -62,7 +62,7 @@ set cursorline                               "line cursor
 set number                                   "show line numbers
 syntax on                                    "syntax highlighting
 set showcmd                                  "show (partial) command in status line
-set colorcolumn=80                           "marker
+set colorcolumn=82                           "marker
 
 "enable the mouse.
 "if has('mouse')
@@ -155,7 +155,7 @@ noremap == :Neoformat<CR>
 set exrc
 set secure
 
-
+"##### Clojure #####
 "reload namespace in Clojure REPL
 autocmd BufWritePost *.clj,*.cljc :Require
 autocmd FileType clojure nnoremap <buffer> >> :call parinfer#do_indent()<CR>
@@ -164,11 +164,12 @@ autocmd FileType clojure nnoremap mm :Eval (intern 'user 'm *1)<CR>
 
 let g:clj_fmt_autosave = 0
 
-
+"##### Jelly #####
 autocmd BufNewFile,BufRead *.jly set ft=scheme
 autocmd BufNewFile,BufRead *.jly setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 
+"##### Ocaml #####
 autocmd Filetype ocaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType ocaml nnoremap [d :MerlinLocate<CR>
 
@@ -179,11 +180,6 @@ let s:opam_share_dir = system("opam config var share")
 let s:opam_share_dir = substitute(s:opam_share_dir, '[\r\n]*$', '', '')
 
 let s:opam_configuration = {}
-
-function! OpamConfOcpIndent()
-  execute "set rtp^=" . s:opam_share_dir . "/ocp-indent/vim"
-endfunction
-let s:opam_configuration['ocp-indent'] = function('OpamConfOcpIndent')
 
 function! OpamConfOcpIndex()
   execute "set rtp+=" . s:opam_share_dir . "/ocp-index/vim"
@@ -196,7 +192,7 @@ function! OpamConfMerlin()
 endfunction
 let s:opam_configuration['merlin'] = function('OpamConfMerlin')
 
-let s:opam_packages = ["ocp-indent", "ocp-index", "merlin"]
+let s:opam_packages = ["ocp-index", "merlin"]
 let s:opam_check_cmdline = ["opam list --installed --short --safe --color=never"] + s:opam_packages
 let s:opam_available_tools = split(system(join(s:opam_check_cmdline)))
 for tool in s:opam_packages
