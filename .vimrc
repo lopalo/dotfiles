@@ -83,6 +83,9 @@ command! Wqa wqa
 command! W w
 command! Q q
 
+"use // to search selected text in visual mode
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
 "use :C to clear hlsearch
 command! C nohlsearch
 
