@@ -1,8 +1,4 @@
 
-"tools to install:
-"    Python: pylint, mypy, black, jedi
-"    JavaScript: eslint
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -28,6 +24,9 @@ Plug 'tpope/vim-obsession'
 Plug 'sbdchd/neoformat'
 Plug 'jpalardy/vim-slime'
 
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'davidhalter/jedi-vim'
+
 call plug#end()
 ":PlugInstall
 
@@ -36,9 +35,6 @@ set nocompatible                       "use Vim settings, rather than Vi setting
 set incsearch                          "do incremental searching
 set expandtab                          "enter spaces when tab is pressed
 set textwidth=1200                     "break lines when line length increases
-set tabstop=4                          "use 4 spaces to represent tab
-set softtabstop=4
-set shiftwidth=4                       "number of spaces to use for auto indent
 set autoindent                         "copy indent from current line when starting a new line
 set backspace=indent,eol,start         "make backspaces more powerfull
 autocmd BufWritePre * :%s/\s\+$//e     "remove trailing spaces
@@ -81,7 +77,8 @@ command! C nohlsearch
 "use K in command mode to split line
 nnoremap K i<CR><Esc>
 
-let maplocalleader="\<space>"
+let mapleader="["
+let maplocalleader="["
 
 "set to auto read when a file is changed from the outside
 set autoread
@@ -123,26 +120,71 @@ let g:AutoPairs = {'(':')', '[':']', '{':'}','"':'"', '```':'```', '"""':'"""', 
 set tags=.ctags
 
 let g:ale_set_highlights = 0
-nmap <silent> <LocalLeader>e :ALEToggle<CR>
+nmap <silent> <leader>e :ALEToggle<CR>
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+
+noremap == :Neoformat<CR>
 
 let g:rainbow_active = 1
 
 let g:rainbow_conf = {
-\   'ctermfgs': ['brown', 'darkblue', 184, 209, 140, 178, 'darkgreen', 'darkcyan', 52, 'darkmagenta', 125],
-\   'operators': '_,_',
-\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\    'ctermfgs': ['brown', 'darkblue', 184, 209, 140, 178, 'darkgreen', 'darkcyan', 52, 'darkmagenta', 125],
+\    'operators': '_,_',
+\    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
 \}
 
 
 let g:slime_target = "tmux"
 
-noremap == :Neoformat<CR>
 
-"use project specific .vimrc files
+"use project-specific .vimrc files
 set exrc
 set secure
+
+
+"language-specific settings
+
+
+let g:ale_linters = {
+\    'python': ['pyflakes', 'mypy'],
+\}
+
+
+""##### Python #####
+
+let g:neoformat_enabled_python = ['black']
+
+autocmd FileType python nnoremap <leader>c :call MypyStrictToggle()<CR>
+autocmd FileType python vnoremap <leader>t :call RevealType()<CR>
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#goto_stubs_command = "<leader>s"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#rename_command = "<leader>r"
+let g:jedi#documentation_command = "<leader>h"
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = "2"
+
+let g:ale_python_mypy_options = ""
+function MypyStrictToggle()
+    if g:ale_python_mypy_options == "--strict"
+        let g:ale_python_mypy_options = ""
+    else
+        let g:ale_python_mypy_options = "--strict"
+    endif
+    :call ale#Queue(0, 'lint_file')
+endfunction
+
+function RevealType()
+    let mypycmd = 'python3 -m mypy --incremental'
+    let path = expand('%:p')
+    let [startline, startcol] = getpos("'<")[1:2]
+    let [endline, endcol] = getpos("'>")[1:2]
+    let startcol = startcol - 1
+    let output = system('python3 ~/bin/find_type.py ' . path . ' ' . startline . ' ' . startcol . ' ' . endline . ' ' . endcol . ' ' . mypycmd)
+    :echo output
+endfunction
 
 
 
