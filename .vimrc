@@ -151,12 +151,15 @@ let g:ale_linters = {
 \}
 
 
-""##### Python #####
+"##### Python #####
+
 
 let g:neoformat_enabled_python = ['black']
 
-autocmd FileType python nnoremap <leader>c :call MypyStrictToggle()<CR>
+autocmd FileType python nnoremap <leader>c :call MypyStrictCheck()<CR>
+autocmd FileType python nnoremap <leader>C :call MypyNonStrictCheck()<CR>
 autocmd FileType python vnoremap <leader>t :call RevealType()<CR>
+"Install 'pynvim' to use jedi-vim from a virtualenv
 let g:jedi#goto_command = "<leader>d"
 let g:jedi#goto_assignments_command = "<leader>g"
 let g:jedi#goto_stubs_command = "<leader>s"
@@ -167,12 +170,13 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = "2"
 
 let g:ale_python_mypy_options = ""
-function MypyStrictToggle()
-    if g:ale_python_mypy_options == "--strict"
-        let g:ale_python_mypy_options = ""
-    else
-        let g:ale_python_mypy_options = "--strict"
-    endif
+function MypyStrictCheck()
+    let g:ale_python_mypy_options = "--strict"
+    :call ale#Queue(0, 'lint_file')
+endfunction
+
+function MypyNonStrictCheck()
+    let g:ale_python_mypy_options = ""
     :call ale#Queue(0, 'lint_file')
 endfunction
 

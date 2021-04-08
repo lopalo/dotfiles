@@ -20,5 +20,3 @@ parse_git_branch() {
 
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\]$ "
 
-# opam configuration
-test -r /home/vlad/.opam/opam-init/init.sh && . /home/vlad/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
