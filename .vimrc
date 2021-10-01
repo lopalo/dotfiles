@@ -27,6 +27,8 @@ Plug 'jpalardy/vim-slime'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'davidhalter/jedi-vim'
 
+Plug 'racer-rust/vim-racer'
+
 call plug#end()
 ":PlugInstall
 
@@ -148,6 +150,7 @@ set secure
 
 let g:ale_linters = {
 \    'python': ['pyflakes', 'mypy'],
+\    'rust': ['cargo'],
 \}
 
 
@@ -158,7 +161,6 @@ let g:neoformat_enabled_python = ['black']
 
 autocmd FileType python nnoremap <leader>c :call MypyStrictCheck()<CR>
 autocmd FileType python nnoremap <leader>C :call MypyNonStrictCheck()<CR>
-autocmd FileType python vnoremap <leader>t :call RevealType()<CR>
 "Install 'pynvim' to use jedi-vim from a virtualenv
 let g:jedi#goto_command = "<leader>d"
 let g:jedi#goto_assignments_command = "<leader>g"
@@ -180,16 +182,18 @@ function MypyNonStrictCheck()
     :call ale#Queue(0, 'lint_file')
 endfunction
 
-function RevealType()
-    let mypycmd = 'python3 -m mypy --incremental'
-    let path = expand('%:p')
-    let [startline, startcol] = getpos("'<")[1:2]
-    let [endline, endcol] = getpos("'>")[1:2]
-    let startcol = startcol - 1
-    let output = system('python3 ~/bin/find_type.py ' . path . ' ' . startline . ' ' . startcol . ' ' . endline . ' ' . endcol . ' ' . mypycmd)
-    :echo output
-endfunction
+
+"##### Rust #####
 
 
+let g:neoformat_enabled_rust = ['rustfmt']
 
-
+"Run 'rustup component add rust-src' to add the source code of Rust's std library
+let g:racer_experimental_completer = 1
+augroup Racer
+    autocmd!
+    autocmd FileType rust nmap <buffer> <leader>d <Plug>(rust-def)
+    autocmd FileType rust nmap <buffer> <leader>ds <Plug>(rust-def-split)
+    autocmd FileType rust nmap <buffer> <leader>dv <Plug>(rust-def-vertical)
+    autocmd FileType rust nmap <buffer> <leader>h <Plug>(rust-doc)
+augroup END

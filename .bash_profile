@@ -20,3 +20,4 @@ parse_git_branch() {
 
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\]$ "
 
+. "$HOME/.cargo/env"
