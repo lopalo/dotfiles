@@ -1,4 +1,3 @@
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -27,7 +26,6 @@ Plug 'jpalardy/vim-slime'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'davidhalter/jedi-vim'
 
-Plug 'racer-rust/vim-racer'
 
 call plug#end()
 ":PlugInstall
@@ -150,7 +148,7 @@ set secure
 
 let g:ale_linters = {
 \    'python': ['pyflakes', 'mypy'],
-\    'rust': ['cargo'],
+\    'rust': ['analyzer'],
 \}
 
 
@@ -187,13 +185,14 @@ endfunction
 
 
 let g:neoformat_enabled_rust = ['rustfmt']
+let g:ale_completion_enabled = 1
 
+"Install 'rust-analyzer'
 "Run 'rustup component add rust-src' to add the source code of Rust's std library
-let g:racer_experimental_completer = 1
-augroup Racer
-    autocmd!
-    autocmd FileType rust nmap <buffer> <leader>d <Plug>(rust-def)
-    autocmd FileType rust nmap <buffer> <leader>ds <Plug>(rust-def-split)
-    autocmd FileType rust nmap <buffer> <leader>dv <Plug>(rust-def-vertical)
-    autocmd FileType rust nmap <buffer> <leader>h <Plug>(rust-doc)
-augroup END
+autocmd FileType rust nnoremap <leader>d :ALEGoToDefinition<CR>
+autocmd FileType rust nnoremap <leader>n :ALEFindReferences<CR>
+autocmd FileType rust nnoremap <leader>r :ALERename<CR>
+autocmd FileType rust nnoremap <leader>h :ALEHover<CR>
+
+
+
