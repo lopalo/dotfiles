@@ -26,6 +26,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'davidhalter/jedi-vim'
 
+Plug 'arzg/vim-rust-syntax-ext'
 
 call plug#end()
 ":PlugInstall
