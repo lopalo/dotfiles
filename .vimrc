@@ -151,6 +151,7 @@ let g:ale_linters = {
 \    'python': ['pyflakes', 'mypy'],
 \    'rust': ['analyzer'],
 \}
+let g:ale_completion_enabled = 1
 
 
 "##### Python #####
@@ -186,7 +187,9 @@ endfunction
 
 
 let g:neoformat_enabled_rust = ['rustfmt']
-let g:ale_completion_enabled = 1
+let g:ale_rust_analyzer_config = {
+\    'cargo': { 'allFeatures': v:true }
+\}
 
 "Install 'rust-analyzer'
 "Run 'rustup component add rust-src' to add the source code of Rust's std library
