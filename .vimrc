@@ -58,6 +58,10 @@ set colorcolumn=82                           "marker
 "sets how many lines of history VIM has to remember
 set history=700
 
+"maintain undo history between sessions
+set undofile
+set undodir=~/.vim/undodir
+
 "enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -188,7 +192,16 @@ endfunction
 
 let g:neoformat_enabled_rust = ['rustfmt']
 let g:ale_rust_analyzer_config = {
-\    'cargo': { 'allFeatures': v:true }
+\    'cargo': {
+\        'loadOutDirsFromCheck': v:true,
+\        'allFeatures': v:true
+\    },
+\    'checkOnSave': {
+\        'extraArgs': ['--target-dir', '/tmp/rust-analyzer-check']
+\    },
+\    'procMacro': {
+\        'enable': v:true
+\    }
 \}
 
 "Install 'rust-analyzer'
@@ -200,3 +213,7 @@ autocmd FileType rust nnoremap <leader>h :ALEHover<CR>
 
 
 
+"##### Terraform #####
+
+let g:neoformat_enabled_terraform = ['terraform']
+let g:neoformat_enabled_tf = ['tf']
