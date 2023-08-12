@@ -32,3 +32,5 @@ export PATH="$HOME/.poetry/bin:$PATH"
 #### Rust env ####
 . "$HOME/.cargo/env"
 #### Rust env ####
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

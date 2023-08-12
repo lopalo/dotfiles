@@ -155,6 +155,8 @@ let g:ale_linters = {
 \    'rust': ['analyzer'],
 \}
 let g:ale_completion_enabled = 1
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = ['│', '─', ' ', ' ', ' ', ' ']
 
 
 "##### Python #####
@@ -206,6 +208,8 @@ let g:ale_rust_analyzer_config = {
 "Install 'rust-analyzer'
 "Run 'rustup component add rust-src' to add the source code of Rust's std library
 autocmd FileType rust nnoremap <leader>d :ALEGoToDefinition<CR>
+autocmd FileType rust nnoremap <leader>t :ALEGoToTypeDefinition<CR>
+autocmd FileType rust nnoremap <leader>i :ALEGoToImplementation<CR>
 autocmd FileType rust nnoremap <leader>n :ALEFindReferences<CR>
 autocmd FileType rust nnoremap <leader>r :ALERename<CR>
 autocmd FileType rust nnoremap <leader>h :ALEHover<CR>
