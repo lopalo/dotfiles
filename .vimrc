@@ -23,9 +23,6 @@ Plug 'tpope/vim-obsession'
 Plug 'sbdchd/neoformat'
 Plug 'jpalardy/vim-slime'
 
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'davidhalter/jedi-vim'
-
 Plug 'arzg/vim-rust-syntax-ext'
 
 call plug#end()
@@ -42,18 +39,16 @@ autocmd BufWritePre * :%s/\s\+$//e     "remove trailing spaces
 
 "visual
 colorscheme lucius
-LuciusDarkLowContrast
-highlight Normal ctermbg=black
 set cursorline                               "line cursor
 set number                                   "show line numbers
 syntax on                                    "syntax highlighting
 set showcmd                                  "show (partial) command in status line
 set colorcolumn=82                           "marker
 
-"enable the mouse.
-"if has('mouse')
-"    set mouse=a
-"endif
+"disable the mouse.
+if has('mouse')
+   set mouse=
+endif
 
 "sets how many lines of history VIM has to remember
 set history=700
@@ -147,76 +142,60 @@ set exrc
 set secure
 
 
-"language-specific settings
-
-
+"ALE settings
 let g:ale_linters = {
-\    'python': ['pyflakes', 'mypy'],
-\    'rust': ['analyzer'],
+\    'rust': ['cargo', 'analyzer'],
+\    'python': ['pyright'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
 let g:ale_floating_window_border = ['│', '─', ' ', ' ', ' ', ' ']
+let g:ale_use_neovim_diagnostics_api = 1
 
-
-"##### Python #####
-
-
-let g:neoformat_enabled_python = ['black']
-
-autocmd FileType python nnoremap <leader>c :call MypyStrictCheck()<CR>
-autocmd FileType python nnoremap <leader>C :call MypyNonStrictCheck()<CR>
-"Install 'pynvim' to use jedi-vim from a virtualenv
-let g:jedi#goto_command = "<leader>d"
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_stubs_command = "<leader>s"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#documentation_command = "<leader>h"
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = "2"
-
-let g:ale_python_mypy_options = ""
-function MypyStrictCheck()
-    let g:ale_python_mypy_options = "--strict"
-    :call ale#Queue(0, 'lint_file')
-endfunction
-
-function MypyNonStrictCheck()
-    let g:ale_python_mypy_options = ""
-    :call ale#Queue(0, 'lint_file')
-endfunction
+autocmd FileType * nnoremap <leader>d :ALEGoToDefinition<CR>
+autocmd FileType * nnoremap <leader>t :ALEGoToTypeDefinition<CR>
+autocmd FileType * nnoremap <leader>i :ALEGoToImplementation<CR>
+autocmd FileType * nnoremap <leader>n :ALEFindReferences<CR>
+autocmd FileType * nnoremap <leader>r :ALERename<CR>
+autocmd FileType * nnoremap <leader>h :ALEHover<CR>
 
 
 "##### Rust #####
 
+"Install 'rust-analyzer'
+"Run 'rustup component add rust-src' to add the source code of Rust's std library
 
 let g:neoformat_enabled_rust = ['rustfmt']
-let g:ale_rust_analyzer_config = {
+
+call ale#Set('rust_cargo_default_feature_behavior', 'all')
+call ale#Set('rust_cargo_check_all_targets', 1)
+
+call ale#Set('rust_analyzer_executable', 'ra-multiplex')
+call ale#Set('rust_analyzer_config', {
 \    'cargo': {
-\        'loadOutDirsFromCheck': v:true,
-\        'allFeatures': v:true
+\        'features': 'all',
+\        'allTargets': 'true'
 \    },
-\    'checkOnSave': {
-\        'extraArgs': ['--target-dir', '/tmp/rust-analyzer-check']
-\    },
+\    'checkOnSave': v:false,
 \    'procMacro': {
 \        'enable': v:true
 \    }
-\}
+\})
 
-"Install 'rust-analyzer'
-"Run 'rustup component add rust-src' to add the source code of Rust's std library
-autocmd FileType rust nnoremap <leader>d :ALEGoToDefinition<CR>
-autocmd FileType rust nnoremap <leader>t :ALEGoToTypeDefinition<CR>
-autocmd FileType rust nnoremap <leader>i :ALEGoToImplementation<CR>
-autocmd FileType rust nnoremap <leader>n :ALEFindReferences<CR>
-autocmd FileType rust nnoremap <leader>r :ALERename<CR>
-autocmd FileType rust nnoremap <leader>h :ALEHover<CR>
+"##### Rust #####
 
+"##### Python #####
 
+"Install 'Pyright': pip install pyright
+
+let g:neoformat_enabled_python = ['black']
+
+"##### Python #####
 
 "##### Terraform #####
 
 let g:neoformat_enabled_terraform = ['terraform']
 let g:neoformat_enabled_tf = ['tf']
+
+"##### Terraform #####
+

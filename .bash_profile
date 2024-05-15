@@ -8,29 +8,30 @@ alias l='ls -CF'
 
 set -o vi
 
-PATH=$PATH:~/bin
+PATH=~/.local/bin:$PATH
+PATH=~/bin:$PATH
 
-[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+if [ -f /usr/local/etc/bash_completion ]; then
+    . /usr/local/etc/bash_completion
+fi
 
 export LC_ALL=en_US.UTF-8
 
 parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\]$ "
 
-#### Python env ####
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+
+if [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
-export PATH="$HOME/.poetry/bin:$PATH"
-#### Python env ####
 
-#### Rust env ####
-. "$HOME/.cargo/env"
-#### Rust env ####
+if [ -f ~/.cargo/env ]; then
+    . ~/.cargo/env
+fi
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if [ -f ~/.rye/env ]; then
+    . ~/.rye/env
+fi
