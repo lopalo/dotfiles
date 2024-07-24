@@ -10,7 +10,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'jonathanfilip/vim-lucius'
+Plug 'nordtheme/vim'
 Plug 'ervandew/supertab'
 Plug 'luochen1990/rainbow'
 Plug 'w0rp/ale'
@@ -38,7 +38,8 @@ set backspace=indent,eol,start         "make backspaces more powerfull
 autocmd BufWritePre * :%s/\s\+$//e     "remove trailing spaces
 
 "visual
-colorscheme lucius
+set termguicolors
+colorscheme nord
 set cursorline                               "line cursor
 set number                                   "show line numbers
 syntax on                                    "syntax highlighting
@@ -104,7 +105,7 @@ set showmatch
 
 "statusline settings
 set laststatus=2
-let g:airline_theme='bubblegum'
+let g:airline_theme='nord'
 
 "no swap of files
 set nobackup
@@ -127,13 +128,6 @@ noremap == :Neoformat<CR>
 
 let g:rainbow_active = 1
 
-let g:rainbow_conf = {
-\    'ctermfgs': ['brown', 'darkblue', 184, 209, 140, 178, 'darkgreen', 'darkcyan', 52, 'darkmagenta', 125],
-\    'operators': '_,_',
-\    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-\}
-
-
 let g:slime_target = "tmux"
 
 
@@ -149,7 +143,6 @@ let g:ale_linters = {
 \}
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
-let g:ale_floating_window_border = ['│', '─', ' ', ' ', ' ', ' ']
 let g:ale_use_neovim_diagnostics_api = 1
 
 autocmd FileType * nnoremap <leader>d :ALEGoToDefinition<CR>
