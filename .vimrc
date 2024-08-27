@@ -167,7 +167,8 @@ call ale#Set('rust_analyzer_executable', 'ra-multiplex')
 call ale#Set('rust_analyzer_config', {
 \    'cargo': {
 \        'features': 'all',
-\        'allTargets': 'true'
+\        'allTargets': 'true',
+\        'targetDir': 'ra_target'
 \    },
 \    'checkOnSave': v:false,
 \    'procMacro': {
