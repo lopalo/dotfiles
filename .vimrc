@@ -32,6 +32,8 @@ call plug#end()
 set nocompatible                       "use Vim settings, rather than Vi settings
 set incsearch                          "do incremental searching
 set expandtab                          "enter spaces when tab is pressed
+set tabstop=2
+set shiftwidth=2
 set textwidth=1200                     "break lines when line length increases
 set autoindent                         "copy indent from current line when starting a new line
 set backspace=indent,eol,start         "make backspaces more powerfull
@@ -140,6 +142,7 @@ set secure
 let g:ale_linters = {
 \    'rust': ['cargo', 'analyzer'],
 \    'python': ['pyright'],
+\    'typescript': ['tsserver', 'eslint'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
@@ -155,7 +158,7 @@ autocmd FileType * nnoremap <leader>h :ALEHover<CR>
 
 "##### Rust #####
 
-"Install 'rust-analyzer'
+"Install 'rust-analyzer' and optionally 'ra-multiplex'
 "Run 'rustup component add rust-src' to add the source code of Rust's std library
 
 let g:neoformat_enabled_rust = ['rustfmt']
@@ -185,6 +188,17 @@ call ale#Set('rust_analyzer_config', {
 let g:neoformat_enabled_python = ['black']
 
 "##### Python #####
+
+"##### TypeScript #####
+
+"Install 'tsserver': npm install -g typescript
+"Install 'typescript-eslint':
+"  npm install -g eslint
+"  npm install --save-dev @eslint/js @types/eslint__js typescript-eslint
+
+let g:neoformat_enabled_typescript = ['prettier']
+
+"##### TypeScript #####
 
 "##### Terraform #####
 
