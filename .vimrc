@@ -141,7 +141,7 @@ set secure
 "ALE settings
 let g:ale_linters = {
 \    'rust': ['cargo', 'analyzer'],
-\    'python': ['pyright'],
+\    'python': ['pyright', 'ruff'],
 \    'typescript': ['tsserver', 'eslint'],
 \}
 let g:ale_completion_enabled = 1
@@ -184,8 +184,9 @@ call ale#Set('rust_analyzer_config', {
 "##### Python #####
 
 "Install 'Pyright': pip install pyright
+"Install 'Ruff': pip install ruff
 
-let g:neoformat_enabled_python = ['black']
+let g:neoformat_enabled_python = ['ruff']
 
 "##### Python #####
 
