@@ -35,3 +35,7 @@ fi
 if [ -f ~/.rye/env ]; then
     . ~/.rye/env
 fi
+. "/home/vlad/.deno/env"
+. "$HOME/.cargo/env"
+
+source /home/vlad/.config/broot/launcher/bash/br

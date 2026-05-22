@@ -34,7 +34,7 @@ set incsearch                          "do incremental searching
 set expandtab                          "enter spaces when tab is pressed
 set tabstop=2
 set shiftwidth=2
-set textwidth=1200                     "break lines when line length increases
+set textwidth=10000                    "break lines when line length increases
 set autoindent                         "copy indent from current line when starting a new line
 set backspace=indent,eol,start         "make backspaces more powerfull
 autocmd BufWritePre * :%s/\s\+$//e     "remove trailing spaces
@@ -170,8 +170,8 @@ call ale#Set('rust_analyzer_executable', 'ra-multiplex')
 call ale#Set('rust_analyzer_config', {
 \    'cargo': {
 \        'features': 'all',
-\        'allTargets': 'true',
-\        'targetDir': 'ra_target'
+\        'allTargets': v:true,
+\        'targetDir': 'target'
 \    },
 \    'checkOnSave': v:false,
 \    'procMacro': {
