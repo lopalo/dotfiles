@@ -40,6 +40,3 @@ if [ -f "$HOME/.deno/env" ]; then
     . "$HOME/.deno/env"
 fi
 
-if [ -f /home/vlad/.config/broot/launcher/bash/br ]; then
-    source /home/vlad/.config/broot/launcher/bash/br
-fi
