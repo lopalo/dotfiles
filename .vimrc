@@ -24,10 +24,14 @@ Plug 'sbdchd/neoformat'
 Plug 'jpalardy/vim-slime'
 
 Plug 'arzg/vim-rust-syntax-ext'
+Plug 'ojroques/vim-oscyank'
 
 call plug#end()
 ":PlugInstall
 
+"OSC 52 clipboard (copy to system clipboard over SSH/tmux)
+let g:oscyank_term = 'default'
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankRegister +' | endif
 
 set nocompatible                       "use Vim settings, rather than Vi settings
 set incsearch                          "do incremental searching
