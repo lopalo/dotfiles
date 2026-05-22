@@ -8,6 +8,7 @@ vim.g.mapleader = "["
 vim.g.maplocalleader = "["
 
 -- OSC 52 clipboard (copy to system clipboard over SSH/tmux)
+vim.opt.clipboard = "unnamedplus"
 vim.g.clipboard = {
   name = "OSC 52",
   copy = {
@@ -95,6 +96,20 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+-- LSP keymaps
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local opts = { buffer = args.buf, silent = true }
+    keymap("n", "<leader>d", vim.lsp.buf.definition, opts)
+    keymap("n", "<leader>t", vim.lsp.buf.type_definition, opts)
+    keymap("n", "<leader>i", vim.lsp.buf.implementation, opts)
+    keymap("n", "<leader>n", vim.lsp.buf.references, opts)
+    keymap("n", "<leader>r", vim.lsp.buf.rename, opts)
+    keymap("n", "<leader>h", vim.lsp.buf.hover, opts)
+    keymap("n", "<leader>a", vim.lsp.buf.code_action, opts)
+  end,
+})
+
 --------------------------------------------------------------------------------
 -- lazy.nvim Bootstrap
 --------------------------------------------------------------------------------
@@ -166,10 +181,12 @@ require("lazy").setup({
     },
   },
 
-  -- Treesitter
+  -- Treesitter (v0.10.0: last stable release with configs API; main needs tree-sitter CLI)
   {
     "nvim-treesitter/nvim-treesitter",
+    version = "v0.10.0",
     build = ":TSUpdate",
+    lazy = false,
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = { "rust", "python", "typescript", "javascript", "lua", "bash", "json", "yaml", "terraform", "vim", "vimdoc" },
@@ -199,46 +216,6 @@ require("lazy").setup({
       require("mason-lspconfig").setup({
         ensure_installed = { "pyright", "ruff", "ts_ls", "eslint" },
       })
-
-      local lspconfig = require("lspconfig")
-
-      local on_attach = function(_, bufnr)
-        local opts = { buffer = bufnr, silent = true }
-        keymap("n", "<leader>d", vim.lsp.buf.definition, opts)
-        keymap("n", "<leader>t", vim.lsp.buf.type_definition, opts)
-        keymap("n", "<leader>i", vim.lsp.buf.implementation, opts)
-        keymap("n", "<leader>n", vim.lsp.buf.references, opts)
-        keymap("n", "<leader>r", vim.lsp.buf.rename, opts)
-        keymap("n", "<leader>h", vim.lsp.buf.hover, opts)
-        keymap("n", "<leader>a", vim.lsp.buf.code_action, opts)
-      end
-
-      -- Rust (using ra-multiplex)
-      lspconfig.rust_analyzer.setup({
-        cmd = { "ra-multiplex" },
-        on_attach = on_attach,
-        settings = {
-          ["rust-analyzer"] = {
-            cargo = {
-              features = "all",
-              allTargets = true,
-              targetDir = "target",
-            },
-            checkOnSave = true,
-            procMacro = {
-              enable = true,
-            },
-          },
-        },
-      })
-
-      -- Python
-      lspconfig.pyright.setup({ on_attach = on_attach })
-      lspconfig.ruff.setup({ on_attach = on_attach })
-
-      -- TypeScript
-      lspconfig.ts_ls.setup({ on_attach = on_attach })
-      lspconfig.eslint.setup({ on_attach = on_attach })
     end,
   },
 
@@ -353,3 +330,26 @@ require("lazy").setup({
     },
   },
 })
+
+--------------------------------------------------------------------------------
+-- LSP
+--------------------------------------------------------------------------------
+
+vim.lsp.config("rust_analyzer", {
+  cmd = { "ra-multiplex" },
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        features = "all",
+        allTargets = true,
+        targetDir = "target",
+      },
+      checkOnSave = true,
+      procMacro = {
+        enable = true,
+      },
+    },
+  },
+})
+
+vim.lsp.enable({ "rust_analyzer", "pyright", "ruff", "ts_ls", "eslint" })

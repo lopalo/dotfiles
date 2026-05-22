@@ -30,6 +30,9 @@ call plug#end()
 ":PlugInstall
 
 "OSC 52 clipboard (copy to system clipboard over SSH/tmux)
+if has('clipboard')
+  set clipboard=unnamedplus
+endif
 let g:oscyank_term = 'default'
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankRegister +' | endif
 
