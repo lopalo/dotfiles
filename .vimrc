@@ -93,7 +93,7 @@ set ignorecase
 set wildignorecase
 
 "ignore these file extensions
-set wildignore +=*.pyc,*.o,*.hi,*.jpg,*.png,node_modules
+set wildignore+=*.pyc,*.o,*.hi,*.jpg,*.png,node_modules
 let g:netrw_list_hide = "\.pyc$,\.o$,\.hi$,\.jpg$,\.png$"
 
 "when searching try to be smart about cases
@@ -140,13 +140,14 @@ set secure
 
 "ALE settings
 let g:ale_linters = {
-\    'rust': ['cargo', 'analyzer'],
+\    'rust': ['analyzer'],
 \    'python': ['pyright', 'ruff'],
 \    'typescript': ['tsserver', 'eslint'],
 \}
 let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
-let g:ale_use_neovim_diagnostics_api = 1
+" Only works in Neovim
+" let g:ale_use_neovim_diagnostics_api = 1
 
 autocmd FileType * nnoremap <leader>d :ALEGoToDefinition<CR>
 autocmd FileType * nnoremap <leader>t :ALEGoToTypeDefinition<CR>
@@ -163,21 +164,18 @@ autocmd FileType * nnoremap <leader>h :ALEHover<CR>
 
 let g:neoformat_enabled_rust = ['rustfmt']
 
-call ale#Set('rust_cargo_default_feature_behavior', 'all')
-call ale#Set('rust_cargo_check_all_targets', 1)
-
-call ale#Set('rust_analyzer_executable', 'ra-multiplex')
-call ale#Set('rust_analyzer_config', {
+let g:ale_rust_analyzer_executable = 'ra-multiplex'
+let g:ale_rust_analyzer_config = {
 \    'cargo': {
 \        'features': 'all',
 \        'allTargets': v:true,
 \        'targetDir': 'target'
 \    },
-\    'checkOnSave': v:false,
+\    'checkOnSave': v:true,
 \    'procMacro': {
 \        'enable': v:true
 \    }
-\})
+\}
 
 "##### Rust #####
 
