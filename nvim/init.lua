@@ -29,6 +29,7 @@ vim.opt.autoindent = true
 vim.opt.backspace = "indent,eol,start"
 
 vim.opt.termguicolors = true
+vim.opt.winborder = "rounded"
 vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.showcmd = true
@@ -61,6 +62,18 @@ vim.opt.exrc = true
 vim.opt.secure = true
 
 vim.g.netrw_list_hide = "\\.pyc$,\\.o$,\\.hi$,\\.jpg$,\\.png$"
+
+vim.diagnostic.config({
+  float = {
+    border = "rounded",
+    source = "if_many",
+  },
+  jump = {
+    on_jump = function()
+      vim.diagnostic.open_float()
+    end,
+  },
+})
 
 --------------------------------------------------------------------------------
 -- Keymaps
@@ -105,7 +118,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     keymap("n", "<leader>i", vim.lsp.buf.implementation, opts)
     keymap("n", "<leader>n", vim.lsp.buf.references, opts)
     keymap("n", "<leader>r", vim.lsp.buf.rename, opts)
-    keymap("n", "<leader>h", vim.lsp.buf.hover, opts)
+    keymap("n", "<leader>h", function()
+      vim.lsp.buf.hover({ border = "rounded" })
+    end, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
     keymap("n", "<leader>a", vim.lsp.buf.code_action, opts)
   end,
 })
@@ -234,6 +249,10 @@ require("lazy").setup({
       local luasnip = require("luasnip")
 
       cmp.setup({
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
