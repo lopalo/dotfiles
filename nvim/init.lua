@@ -5,7 +5,6 @@
 --------------------------------------------------------------------------------
 
 vim.g.mapleader = "["
-vim.g.maplocalleader = "["
 
 -- OSC 52 clipboard (copy to system clipboard over SSH/tmux)
 vim.opt.clipboard = "unnamedplus"
@@ -24,7 +23,6 @@ vim.g.clipboard = {
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
-vim.opt.textwidth = 10000
 vim.opt.autoindent = true
 vim.opt.backspace = "indent,eol,start"
 
@@ -60,8 +58,6 @@ vim.opt.tags = ".ctags"
 
 vim.opt.exrc = true
 vim.opt.secure = true
-
-vim.g.netrw_list_hide = "\\.pyc$,\\.o$,\\.hi$,\\.jpg$,\\.png$"
 
 vim.diagnostic.config({
   severity_sort = true,
@@ -216,12 +212,7 @@ require("lazy").setup({
   },
 
   -- Rainbow delimiters (rainbow parentheses)
-  {
-    "HiPhish/rainbow-delimiters.nvim",
-    config = function()
-      require("rainbow-delimiters.setup").setup({})
-    end,
-  },
+  { "HiPhish/rainbow-delimiters.nvim" },
 
   -- LSP
   {
@@ -233,7 +224,7 @@ require("lazy").setup({
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
-        ensure_installed = { "pyright", "ruff", "ts_ls", "eslint" },
+        ensure_installed = { "rust_analyzer", "pyright", "ruff", "ts_ls", "eslint" },
       })
     end,
   },
@@ -324,25 +315,13 @@ require("lazy").setup({
   },
 
   -- Auto pairs
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    opts = {},
-  },
+  { "windwp/nvim-autopairs", event = "InsertEnter" },
 
   -- Surround (vim-surround replacement)
-  {
-    "kylechui/nvim-surround",
-    event = "VeryLazy",
-    opts = {},
-  },
+  { "kylechui/nvim-surround", event = "VeryLazy" },
 
   -- Comment (tcomment replacement)
-  {
-    "numToStr/Comment.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
+  { "numToStr/Comment.nvim", event = "VeryLazy" },
 
   -- Session management (vim-obsession replacement)
   {
@@ -374,5 +353,4 @@ vim.lsp.config("rust_analyzer", {
     },
   },
 })
-
-vim.lsp.enable({ "rust_analyzer", "pyright", "ruff", "ts_ls", "eslint" })
+-- LSP servers enabled via mason-lspconfig automatic_enable; rust uses ra-multiplex via vim.lsp.config above
