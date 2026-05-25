@@ -59,6 +59,9 @@ vim.opt.tags = ".ctags"
 vim.opt.exrc = true
 vim.opt.secure = true
 
+vim.opt.signcolumn = "yes"
+vim.opt.updatetime = 200
+
 vim.diagnostic.config({
   severity_sort = true,
   float = {
@@ -196,17 +199,35 @@ require("lazy").setup({
     },
   },
 
-  -- Treesitter (v0.10.0: last stable release with configs API; main needs tree-sitter CLI)
+  -- Treesitter (Neovim 0.12+ rewrite on main; requires tree-sitter CLI on PATH)
   {
     "nvim-treesitter/nvim-treesitter",
-    version = "v0.10.0",
-    build = ":TSUpdate",
+    branch = "main",
     lazy = false,
+    build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "rust", "python", "typescript", "javascript", "lua", "bash", "json", "yaml", "terraform", "vim", "vimdoc" },
-        highlight = { enable = true },
-        indent = { enable = true },
+      local langs = {
+        "rust",
+        "python",
+        "typescript",
+        "javascript",
+        "lua",
+        "bash",
+        "json",
+        "yaml",
+        "terraform",
+        "vim",
+        "vimdoc",
+      }
+      require("nvim-treesitter").install(langs)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = langs,
+        callback = function()
+          if vim.treesitter.start then
+            vim.treesitter.start()
+          end
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
       })
     end,
   },
@@ -214,17 +235,40 @@ require("lazy").setup({
   -- Rainbow delimiters (rainbow parentheses)
   { "HiPhish/rainbow-delimiters.nvim" },
 
+  -- Git gutter
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      signs = {
+        add = { text = "+" },
+        change = { text = "~" },
+        delete = { text = "_" },
+      },
+    },
+  },
+
   -- LSP
   {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = { "rust_analyzer", "pyright", "ruff", "ts_ls", "eslint" },
+      })
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "ruff",
+          "prettier",
+          "terraform",
+        },
+        auto_update = false,
+        run_on_start = true,
       })
     end,
   },
@@ -234,14 +278,20 @@ require("lazy").setup({
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
+      "windwp/nvim-autopairs",
     },
     config = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+
+      require("nvim-autopairs").setup({ check_ts = true })
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
       cmp.setup({
         window = {
@@ -258,7 +308,7 @@ require("lazy").setup({
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<CR>"] = cmp.mapping.confirm({ select = false }),
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
@@ -279,6 +329,7 @@ require("lazy").setup({
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
+          { name = "nvim_lsp_signature_help" },
           { name = "nvim_lsp" },
           { name = "luasnip" },
         }, {
@@ -303,6 +354,10 @@ require("lazy").setup({
       },
     },
     opts = {
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
       formatters_by_ft = {
         rust = { "rustfmt" },
         python = { "ruff_format" },
@@ -313,9 +368,6 @@ require("lazy").setup({
       },
     },
   },
-
-  -- Auto pairs
-  { "windwp/nvim-autopairs", event = "InsertEnter" },
 
   -- Surround (vim-surround replacement)
   { "kylechui/nvim-surround", event = "VeryLazy" },
