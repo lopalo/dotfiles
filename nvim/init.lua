@@ -64,6 +64,7 @@ vim.opt.secure = true
 vim.g.netrw_list_hide = "\\.pyc$,\\.o$,\\.hi$,\\.jpg$,\\.png$"
 
 vim.diagnostic.config({
+  severity_sort = true,
   float = {
     border = "rounded",
     source = "if_many",
@@ -73,6 +74,9 @@ vim.diagnostic.config({
       vim.diagnostic.open_float()
     end,
   },
+  virtual_text = {
+    show = "first"
+  }
 })
 
 --------------------------------------------------------------------------------
