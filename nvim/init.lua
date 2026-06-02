@@ -116,15 +116,25 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local opts = { buffer = args.buf, silent = true }
-    keymap("n", "<leader>d", vim.lsp.buf.definition, opts)
-    keymap("n", "<leader>t", vim.lsp.buf.type_definition, opts)
-    keymap("n", "<leader>i", vim.lsp.buf.implementation, opts)
-    keymap("n", "<leader>n", vim.lsp.buf.references, opts)
-    keymap("n", "<leader>r", vim.lsp.buf.rename, opts)
-    keymap("n", "<leader>h", function()
+    local function map(mode, lhs, rhs, desc)
+      keymap(mode, lhs, rhs, vim.tbl_extend("force", opts, { desc = desc }))
+    end
+    local tb = require("telescope.builtin")
+
+    map("n", "<leader>d", tb.lsp_definitions, "LSP definitions")
+    map("n", "<leader>t", tb.lsp_type_definitions, "LSP type definitions")
+    map("n", "<leader>i", tb.lsp_implementations, "LSP implementations")
+    map("n", "<leader>n", tb.lsp_references, "LSP references")
+    map("n", "<leader>o", tb.lsp_document_symbols, "LSP document symbols")
+    map("n", "<leader>w", tb.lsp_dynamic_workspace_symbols, "LSP workspace symbols")
+
+    map("n", "<leader>l", vim.lsp.buf.declaration, "LSP declaration")
+    map("n", "<leader>s", vim.lsp.buf.signature_help, "LSP signature help")
+    map("n", "<leader>r", vim.lsp.buf.rename, "LSP rename")
+    map("n", "<leader>h", function()
       vim.lsp.buf.hover({ border = "rounded" })
-    end, vim.tbl_extend("force", opts, { desc = "Hover documentation" }))
-    keymap("n", "<leader>a", vim.lsp.buf.code_action, opts)
+    end, "LSP hover")
+    map({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, "LSP code action")
   end,
 })
 
@@ -363,6 +373,9 @@ require("lazy").setup({
         python = { "ruff_format" },
         typescript = { "prettier" },
         javascript = { "prettier" },
+        json = { "prettier" },
+        yaml = { "prettier" },
+        toml = { "taplo" },
         terraform = { "terraform_fmt" },
         tf = { "terraform_fmt" },
       },
@@ -390,7 +403,7 @@ require("lazy").setup({
 --------------------------------------------------------------------------------
 
 vim.lsp.config("rust_analyzer", {
-  cmd = { "ra-multiplex" },
+  cmd = { "rust-analyzer" },
   settings = {
     ["rust-analyzer"] = {
       cargo = {
