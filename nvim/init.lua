@@ -303,6 +303,10 @@ require("lazy").setup({
       require("nvim-autopairs").setup({ check_ts = true })
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
+      vim.lsp.config("*", {
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+      })
+
       cmp.setup({
         window = {
           completion = cmp.config.window.bordered(),
@@ -409,7 +413,9 @@ vim.lsp.config("rust_analyzer", {
       cargo = {
         features = "all",
         allTargets = true,
-        targetDir = "target",
+      },
+      files = {
+        watcher = "client",
       },
       checkOnSave = true,
       procMacro = {
@@ -418,4 +424,5 @@ vim.lsp.config("rust_analyzer", {
     },
   },
 })
--- LSP servers enabled via mason-lspconfig automatic_enable; rust uses ra-multiplex via vim.lsp.config above
+
+-- LSP servers enabled via mason-lspconfig automatic_enable
