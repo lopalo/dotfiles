@@ -8,6 +8,9 @@ alias l='ls -CF'
 
 set -o vi
 
+export VISUAL="nvim"
+export EDITOR="nvim"
+
 PATH=~/.local/bin:$PATH
 PATH=~/bin:$PATH
 
