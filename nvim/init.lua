@@ -200,6 +200,11 @@ require("lazy").setup({
     },
     opts = {
       view = { width = 30 },
+      -- Keep netrw for :Explore and directory buffers, and don't let the tree
+      -- close windows that re-enter its buffer (e.g. via <C-o>)
+      hijack_netrw = false,
+      hijack_directories = { enable = false },
+      actions = { open_file = { eject = false } },
     },
   },
 
