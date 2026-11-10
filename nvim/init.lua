@@ -298,6 +298,15 @@ require("lazy").setup({
     end,
   },
 
+  -- LSP progress (indexing, cargo check, ...) and notifications
+  {
+    "j-hui/fidget.nvim",
+    lazy = false,
+    opts = {
+      notification = { override_vim_notify = true },
+    },
+  },
+
   -- Completion
   {
     "hrsh7th/nvim-cmp",
