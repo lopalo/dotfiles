@@ -440,4 +440,39 @@ vim.lsp.config("rust_analyzer", {
   },
 })
 
+-- One rust-analyzer per nvim (like rustaceanvim): every Rust buffer attaches to
+-- the running server, even one still initializing, and its project is added
+-- to it as a workspace folder. Dependency sources (~/.cargo, ~/.rustup) are
+-- served as part of the projects using them, so they're not added.
+local cargo_home = vim.env.CARGO_HOME or vim.fs.normalize("~/.cargo")
+local rustup_home = vim.env.RUSTUP_HOME or vim.fs.normalize("~/.rustup")
+
+vim.lsp.config("rust_analyzer", {
+  reuse_client = function(client, config, bufnr)
+    if client.name ~= config.name or client:is_stopped() then
+      return false
+    end
+    vim.b[bufnr].rust_analyzer_root = config.root_dir
+    return true
+  end,
+})
+
+-- On LspAttach, so it also runs after the server initializes and after a restart
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local root = vim.b[args.buf].rust_analyzer_root
+    if not client or client.name ~= "rust_analyzer" or not root
+      or vim.fs.relpath(cargo_home, root) or vim.fs.relpath(rustup_home, root) then
+      return
+    end
+    for _, folder in ipairs(client.workspace_folders or {}) do
+      if folder.name == root then
+        return
+      end
+    end
+    client:_add_workspace_folder(root)
+  end,
+})
+
 -- LSP servers enabled via mason-lspconfig automatic_enable
